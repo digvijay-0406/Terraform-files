@@ -9,11 +9,16 @@ resource "aws_instance" "myec2" {
   tags = {
     Name = "MyNewterra"
   }
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.myec2.public_ip} > ip.txt"
+  }
   provisioner "remote-exec" {
     inline = [
       "sudo yum install nginx -y",
       "sudo service nginx start",
-      "echo 'Hello Bhai' || sudo tee /usr/share/nginx/html/index.html"
+      "cd /usr/share/nginx/html",
+      "sudo touch sonu.html",
+      "echo 'Hello Bhai Kaise ho' | sudo tee sonu.html"
     ]
   }
   connection {
